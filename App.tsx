@@ -38,7 +38,7 @@ const HelloWorldSceneAR = () => {
       active={true}
       /> */}
       <Viro3DObject
-        source={{uri: "https://drive.google.com/uc?export=download&id=1nnluutWBfWQ7OxpUfptNEfRfIHHp0dWW"}} // Adjust the path to your VBX model
+        source={require("./assets/table_scene.glb")} // Adjust the path to your VBX model
         position={[ 0, -1, -1 ]}
         scale={[0.1, 0.1, 0.1]}
         type="GLB"
