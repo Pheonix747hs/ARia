@@ -1,3 +1,4 @@
+
 import {
   ViroARScene,
   ViroARSceneNavigator,
@@ -12,19 +13,29 @@ import {
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
-const HelloWorldSceneAR = () => {
-  const [text, setText] = useState("Initializing AR...");
+import 'react-native-gesture-handler'; // Ensure this is at the top
+import { enableScreens } from 'react-native-screens';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import SplashScreen from './screens/SplashScreen';
+import HomeScreen from './screens/HomeScreen';
+import ARSceneScreen from './screens/ARSceneScreen';
 
-  function onInitialized(state: any, reason: ViroTrackingReason) {
-    console.log("onInitialized", state, reason);
-    if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setText("AR Initialized");
-    } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
-      // Handle loss of tracking
-    }
-  }
+enableScreens(); // Enable react-native-screens
 
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
+    <NavigationContainer>
+    <Stack.Navigator initialRouteName="SplashScreen">
+      <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="ARSceneScreen" component={ARSceneScreen} />
+    </Stack.Navigator>
+  </NavigationContainer>
+    
     <ViroARScene onTrackingUpdated={onInitialized}>
       <ViroAmbientLight color="#ffffff" intensity={500}/>
       
@@ -44,28 +55,9 @@ const HelloWorldSceneAR = () => {
       />
 
     </ViroARScene>
+
+
   );
 };
 
-export default () => {
-  return (
-    <ViroARSceneNavigator
-      autofocus={true}
-      initialScene={{
-        scene: HelloWorldSceneAR,
-      }}
-      style={styles.f1}
-    />
-  );
-};
-
-var styles = StyleSheet.create({
-  f1: { flex: 1 },
-  helloWorldTextStyle: {
-    fontFamily: "Arial",
-    fontSize: 30,
-    color: "#ffffff",
-    textAlignVertical: "center",
-    textAlign: "center",
-  },
-});
+export default App;
