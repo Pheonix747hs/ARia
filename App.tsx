@@ -6,7 +6,8 @@ import {
   ViroTrackingStateConstants,
   Viro3DObject,
   ViroAmbientLight,
-  ViroOrbitCamera
+  ViroNode,
+  ViroCamera
 } from "@reactvision/react-viro";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
@@ -26,24 +27,22 @@ const HelloWorldSceneAR = () => {
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
       <ViroAmbientLight color="#ffffff" intensity={500}/>
-      <ViroText
+      
+
+        <Viro3DObject
+          source={require("./assets/table_scene.glb")}
+          scale={[0.1, 0.1, 0.1]}
+          position={[0, -0.5, -0.4]}
+          type="GLB"
+          rotation={[0, 90, 0]}
+        />
+        <ViroText
         text={text}
         scale={[0.5, 0.5, 0.5]}
         position={[0, 0, -1]}
         style={styles.helloWorldTextStyle}
       />
-      {/* <ViroOrbitCamera 
-      position={[0, -1, 0]}
-      focalPoint={[0, 0, -1]}
-      active={true}
-      /> */}
-      <Viro3DObject
-        source={require("./assets/table_scene.glb")} 
-        position={[ 0, -1, -1 ]}
-        scale={[0.1, 0.1, 0.1]}
-        type="GLB"
 
-      />
     </ViroARScene>
   );
 };
