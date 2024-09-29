@@ -1,7 +1,8 @@
+// types.ts
+
 export type RootStackParamList = {
-    SplashScreen: undefined;
-    HomeScreen: undefined;
-    ARSceneScreen: undefined;
-    // Add other screens here
-  };
-  
+  HomeScreen: undefined;
+  ARSceneScreen: { modelName: string };  // Add this line for ARSceneScreen
+  SettingsScreen: undefined;  // Add this line for SettingsScreen
+  SplashScreen: undefined;
+};
