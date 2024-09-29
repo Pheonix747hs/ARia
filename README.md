@@ -1,3 +1,12 @@
+<details>
+  <summary>Click to view screenshots</summary>
+  
+  <img src="/ScreenShots/1.jpg" alt="Screenshot1" width="200"/>
+  <img src="/ScreenShots/2.jpg" alt="Screenshot2" width="200"/>
+  <img src="/ScreenShots/3.jpg" alt="Screenshot3" width="200"/>
+
+</details>
+
 # Viro Starter Kit
 
 This is a new [**React Native**](https://reactnative.dev) project, set up with `@reactvision/react-viro`.
