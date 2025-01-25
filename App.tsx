@@ -1,5 +1,5 @@
-import React from 'react';
 import 'react-native-gesture-handler'; // Ensure this is at the top
+import React from 'react';
 import { enableScreens } from 'react-native-screens';
 import SplashScreen from './screens/SplashScreen';
 import { NavigationContainer } from "@react-navigation/native";
