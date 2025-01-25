@@ -39,6 +39,12 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
         >
           <Text style={styles.buttonText}>Let's Get Started!</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.startButton}
+          onPress={() => navigation.navigate("HomeScreen")}
+        >
+          <Text style={styles.buttonText}>Home</Text>
+        </TouchableOpacity>
       </LinearGradient>
     </SafeAreaView>
   );
