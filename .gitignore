@@ -68,3 +68,5 @@ yarn-error.log
 # Custom
 *.glb
 *.fbx
+*.jks
+
