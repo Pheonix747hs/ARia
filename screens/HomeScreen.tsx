@@ -1,7 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const HomeScreen = () => {
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+  const [selectedSubject, setSelectedSubject] = useState<keyof typeof models>('General Science');
+
+  // Handle navigation to ARSceneScreen with the modelName
+  const handleModelPress = (modelName: string) => {
+    navigation.navigate('ARSceneScreen', { modelName });
+  };  
+
   return (
     <View>
       <Text style={styles.textstyle}>HomeScreen</Text>
