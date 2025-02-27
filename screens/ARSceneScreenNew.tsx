@@ -1,101 +1,216 @@
+
+
+
+
+
+
+
+
+
+// import {
+//   ViroARScene,
+//   ViroARSceneNavigator,
+//   ViroText,
+//   ViroTrackingReason,
+//   ViroTrackingStateConstants,
+//   Viro3DObject,
+//   ViroAmbientLight,
+// } from "@reactvision/react-viro";
+// import React, { useState } from "react";
+// import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+// import { useNavigation } from "@react-navigation/native";
+
+// const ARSceneNew: React.FC<{ modelName: string }> = ({ modelName }) => {
+//   const [text, setText] = useState("Initializing AR...");
+
+//   function onInitialized(state: any, reason: ViroTrackingReason) {
+//     console.log("onInitialized", state, reason);
+//     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
+//       setText(`${modelName} AR Initialized`);
+//     } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
+//       setText("Tracking Unavailable");
+//     }
+//   }
+
+//   const getModelSource = () => {
+//     return require(`../assets/heart.glb`); // Default model
+//   };
+
+//   return (
+//     <ViroARScene onTrackingUpdated={onInitialized}>
+//       <ViroAmbientLight color="#ffffff" intensity={500} />
+//       <ViroText
+//         text={text}
+//         scale={[0.5, 0.5, 0.5]}
+//         position={[0, 0, -1]}
+//         style={styles.helloWorldTextStyle}
+//       />
+//       <Viro3DObject
+//         source={getModelSource()}
+//         position={[0, 0, -0.02]}
+//         scale={[0.1, 0.1, 0.1]}
+//         type="GLB"
+//       />
+//     </ViroARScene>
+//   );
+// };
+
+// const ARSceneScreenNew: React.FC<{ route: { params: { modelName: string } } }> = ({ route }) => {
+//   const { modelName } = route.params;
+//   const navigation = useNavigation();
+
+//   return (
+//     <View style={styles.container}>
+//       <View style={styles.header}>
+//         <TouchableOpacity onPress={() => navigation.goBack()}>
+//           <Text style={styles.backText}>{"< Back"}</Text>
+//         </TouchableOpacity>
+//         <Text style={styles.title}>{modelName}</Text>
+//       </View>
+//       <ViroARSceneNavigator
+//         autofocus={true}
+//         initialScene={{ scene: () => <ARSceneNew modelName={modelName} /> }}
+//         style={styles.f1}
+//       />
+//     </View>
+//   );
+// };
+
+// export default ARSceneScreenNew;
+
+// const styles = StyleSheet.create({
+//   container: { flex: 1 },
+//   header: {
+//     flexDirection: "row",
+//     alignItems: "center",
+//     padding: 15,
+//     backgroundColor: "black",
+//   },
+//   backText: {
+//     color: "white",
+//     fontSize: 18,
+//   },
+//   title: {
+//     flex: 1,
+//     color: "white",
+//     fontSize: 20,
+//     textAlign: "center",
+//   },
+//   f1: { flex: 1 },
+//   helloWorldTextStyle: {
+//     fontFamily: "Arial",
+//     fontSize: 30,
+//     color: "#ffffff",
+//     textAlignVertical: "center",
+//     textAlign: "center",
+//   },
+// });
+
+
+
 import {
   ViroARScene,
   ViroARSceneNavigator,
   ViroText,
-  ViroTrackingReason,
   ViroTrackingStateConstants,
   Viro3DObject,
   ViroAmbientLight,
 } from "@reactvision/react-viro";
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-// This component represents the AR scene
-const ARScene: React.FC<{ modelName: string }> = ({ modelName }) => {
+interface ARSceneProps {
+  modelName: string;
+  modelFileName: string;
+}
+
+// Create a static mapping of model file keys to the required assets.
+const modelSources: Record<string, any> = {
+  "molecule_structure.glb": require("../assets/brain.glb"),
+  "oxy-atom.glb": require("../assets/oxy-atom.glb"),
+  "diamond.glb": require("../assets/diamond.glb"),
+  "heart.glb": require("../assets/heart.glb"),
+  "brain.glb": require("../assets/brain.glb"),
+  "eye.glb": require("../assets/eye.glb"),
+  "default_scene.glb": require("../assets/brain.glb"), 
+};
+
+const ARSceneNew: React.FC<ARSceneProps> = ({ modelName, modelFileName }) => {
   const [text, setText] = useState("Initializing AR...");
 
-  // Handles AR tracking state updates
-  function onInitialized(state: any, reason: ViroTrackingReason) {
-    console.log("onInitialized", state, reason);
+  const onInitialized = (state: any) => {
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
       setText(`${modelName} AR Initialized`);
-    } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
+    } else {
       setText("Tracking Unavailable");
-    }
-  }
-
-  // Determines the model file to load based on the model name
-  const getModelSource = () => {
-    switch (modelName) {
-      // case 'Earth':
-      //   return require("./assets/earth.glb");
-      // case 'Solar System':
-      //   return require("./assets/solar_system.glb");
-      // case 'Water Molecule':
-      //   return require("./assets/water_molecule.glb");
-      // case 'Periodic Table':
-      //   return require("./assets/periodic_table.glb");
-      // case 'Human Heart':
-      //   return require("./assets/human_heart.glb");
-      // case 'Cell Structure':
-      //   return require("./assets/cell_structure.glb");
-      // case 'Gravity':
-      //   return require("./assets/gravity.glb");
-      // case 'Electric Field':
-      //   return require("./assets/electric_field.glb");
-      default:
-        return require("../assets/table_scene.glb"); // Default model
     }
   };
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
-      {/* Adding ambient light to the scene */}
       <ViroAmbientLight color="#ffffff" intensity={500} />
-      {/* Display AR initialization or model name */}
       <ViroText
         text={text}
         scale={[0.5, 0.5, 0.5]}
         position={[0, 0, -1]}
         style={styles.helloWorldTextStyle}
       />
-      {/* Render the 3D model based on the selected model name */}
       <Viro3DObject
-        source={getModelSource()} // Dynamically select the model based on the name
-        position={[0, -1, -1]}
-        scale={[0.1, 0.1, 0.1]} // Adjust scale if necessary
+        source={modelSources[modelFileName] || modelSources["default_scene.glb"]}
+        position={[0, 0, -0.1]}
+        scale={[0.1, 0.1, 0.1]}
         type="GLB"
       />
     </ViroARScene>
   );
 };
 
-// AR Scene Screen component
-const ARSceneScreen: React.FC<{ route: { params: { modelName: string } } }> = ({
-  route,
-}) => {
-  const { modelName } = route.params; // Get the modelName passed from the HomeScreen
+interface ARSceneScreenProps {
+  route: { params: { modelName: string; modelFileName: string } };
+}
+
+const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
+  const { modelName, modelFileName } = route.params;
+  const navigation = useNavigation();
 
   return (
-    <ViroARSceneNavigator
-      autofocus={true}
-      initialScene={{
-        scene: () => <ARScene modelName={modelName} />,
-      }}
-      style={styles.f1}
-    />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.backText}>{"< Back"}</Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>{modelName}</Text>
+      </View>
+      <ViroARSceneNavigator
+        autofocus
+        initialScene={{
+          scene: () => (
+            <ARSceneNew modelName={modelName} modelFileName={modelFileName} />
+          ),
+        }}
+        style={styles.f1}
+      />
+    </View>
   );
 };
 
-export default ARSceneScreen;
+export default ARSceneScreenNew;
 
 const styles = StyleSheet.create({
+  container: { flex: 1 },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 15,
+    backgroundColor: "black",
+  },
+  backText: { color: "white", fontSize: 18 },
+  title: { flex: 1, color: "white", fontSize: 20, textAlign: "center" },
   f1: { flex: 1 },
   helloWorldTextStyle: {
-    fontFamily: "Arial",
     fontSize: 30,
     color: "#ffffff",
-    textAlignVertical: "center",
     textAlign: "center",
   },
 });

@@ -10,7 +10,7 @@ type SplashScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'SplashScreen'>;
 };
 
-const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
+const SplashScreenNew: React.FC<SplashScreenProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -43,7 +43,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
   );
 }
 
-export default SplashScreen;
+export default SplashScreenNew;
 
 const styles = StyleSheet.create({
   container: {
