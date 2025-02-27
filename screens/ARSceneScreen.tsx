@@ -54,7 +54,7 @@ const ARScene: React.FC<ARSceneProps> = ({ showFirstObject }) => {
   function onInitialized(state: number, reason: ViroTrackingReason): void {
     console.log("onInitialized", state, reason);
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setText("AR Initialized");
+      setText(`${modelName} AR Initialized`);
     } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
       // Handle loss of tracking if needed
     }
