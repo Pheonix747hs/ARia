@@ -10,6 +10,8 @@ import { RootStackParamList } from "./Data/types"; // Import the param list
 import SplashScreenNew from "./screens/SplashScreenNew";
 import HomeScreenNew from "./screens/HomeScreenNew";
 import ARSceneScreenNew from "./screens/ARSceneScreenNew";
+import SettingsScreen from "./screens/SettingsScreen";
+import { ThemeProvider } from "./context/ThemeContext";
 
 // Enable react-native-screens for performance
 enableScreens();
@@ -19,26 +21,33 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="SplashScreen">
-        <Stack.Screen
-          name="SplashScreen"
-          component={SplashScreenNew}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="HomeScreen"
-          component={HomeScreenNew}
-          options={{ headerShown: false }}
-        />
-        {/* Use the correct typing for the ARSceneScreen that expects params */}
-        <Stack.Screen
-          name="ARSceneScreen"
-          component={ARSceneScreenNew as React.FC<any>}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="SplashScreen">
+          <Stack.Screen
+            name="SplashScreen"
+            component={SplashScreenNew}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="HomeScreen"
+            component={HomeScreenNew}
+            options={{ headerShown: false }}
+          />
+          {/* Use the correct typing for the ARSceneScreen that expects params */}
+          <Stack.Screen
+            name="ARSceneScreen"
+            component={ARSceneScreenNew as React.FC<any>}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SettingsScreen"
+            component={SettingsScreen as React.FC<any>}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeProvider>
   );
 };
 
