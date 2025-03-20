@@ -176,7 +176,7 @@ export const modelSources: Record<string, any> = {
   "eye.glb": require("../assets/Models/bio/eye/eye.glb"),
   "half-eye.glb": require("../assets/Models/bio/eye/half-eye.glb"),
   "heart.glb": require("../assets/Models/bio/heart/heart.glb"),
-  "hollow-heart-2.glb": require("../assets/Models/bio/heart/hollow-heart-2.glb"),
+  "hollow-heart-2.glb": require("../assets/Models/bio/heart/heart-hollow-2.glb"),
   "oxy-atom.glb": require("../assets/Models/chem/atom/oxy-atom.glb"),
   "diamond_molecule_structure.glb": require("../assets/Models/chem/diamond/diamond_molecule_structure.glb"),
   "diamond.glb": require("../assets/Models/chem/diamond/diamond.glb"),

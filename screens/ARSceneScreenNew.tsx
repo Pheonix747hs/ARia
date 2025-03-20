@@ -20,6 +20,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { modelSources } from "../Data/modelData";
+import { useTheme } from "../context/ThemeContext";
 
 interface ARSceneProps {
   modelName: string;
@@ -50,8 +51,9 @@ const ARSceneNew: React.FC<ARSceneProps> = ({ modelName, modelFileName }) => {
         source={
           modelSources[modelFileName] || modelSources["default_scene.glb"]
         }
-        position={[0, 0, 0]}
-        scale={[0.5, 0.5, 0.5]}
+        position={[0, 0, -0.5]}
+        scale={[0.2, 0.2, 0.2]}
+        rotation={[0, -90, 0]}
         type="GLB"
       />
     </ViroARScene>
@@ -65,6 +67,7 @@ interface ARSceneScreenProps {
 }
 
 const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
+  const { darkMode } = useTheme(); // Get global dark mode state
   const { modelName, modelFileName, description } = route.params;
   const navigation = useNavigation();
   const [isPanelVisible, setPanelVisible] = useState(false);
@@ -90,6 +93,11 @@ const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        translucent
+        backgroundColor={darkMode ? "#181818" : "#f5f5f5"}
+        barStyle={darkMode ? "light-content" : "dark-content"}
+      />
       <ViroARSceneNavigator
         autofocus
         initialScene={{
@@ -101,11 +109,27 @@ const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
       />
 
       {/* Header overlay */}
-      <View style={styles.absoluteHeader}>
+      <View
+        style={[
+          styles.absoluteHeader,
+          darkMode ? styles.headerdark : styles.headerlight,
+        ]}
+      >
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.backText}>{"< Back"}</Text>
+          <Text
+            style={[
+              styles.backText,
+              { color: darkMode ? "white" : "black" }, // Adjust text color dynamically
+            ]}
+          >
+            {"< Back"}
+          </Text>
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{modelName}</Text>
+        <Text
+          style={[styles.headerTitle, { color: darkMode ? "white" : "black" }]}
+        >
+          {modelName}
+        </Text>
         <TouchableOpacity
           onPress={() => setPanelVisible(true)}
           style={styles.infoButton}
@@ -115,13 +139,38 @@ const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
       </View>
 
       {/* Modal Info Panel */}
+
       <Modal visible={isPanelVisible} transparent animationType="none">
         <View style={styles.modalContainer}>
           <Animated.View
-            style={[styles.modalContent, { opacity: panelOpacity }]}
+            style={[
+              styles.modalContent,
+              { opacity: panelOpacity },
+              { backgroundColor: darkMode ? "#222222" : "#f5f5f5" },
+            ]}
           >
-            <Text style={styles.modalTitle}>{modelName}</Text>
-            <Text style={styles.modalDescription}>{description}</Text>
+            <Text
+              style={[
+                styles.modalTitle,
+                { color: darkMode ? "white" : "black" },
+              ]}
+            >
+              {modelName}
+            </Text>
+            <View
+              style={{
+                borderBottomColor: darkMode ? "white" : "black",
+                borderBottomWidth: 2,
+              }}
+            />
+            <Text
+              style={[
+                styles.modalDescription,
+                { color: darkMode ? "white" : "black" },
+              ]}
+            >
+              {description}
+            </Text>
             <TouchableOpacity
               onPress={() => setPanelVisible(false)}
               style={styles.modalButton}
@@ -153,12 +202,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
     padding: 10,
   },
+  headerlight: { backgroundColor: "rgba(255, 255, 255, 0.5)" },
+  headerdark: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
   backText: { color: "white", fontSize: 18 },
   headerTitle: { flex: 1, color: "white", fontSize: 20, textAlign: "center" },
-  infoButton: { padding: 8 },
+  infoButton: {
+    padding: 8,
+  },
   infoButtonText: { fontSize: 24, color: "white" },
   modalContainer: {
     flex: 1,
@@ -166,18 +218,23 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.6)",
   },
   modalContent: {
-    backgroundColor: "#fff",
     padding: 20,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
+  modaldarkContent: {},
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
     color: "black",
   },
-  modalDescription: { fontSize: 16, marginBottom: 20, color: "black" },
+  modalDescription: {
+    fontSize: 16,
+    marginBottom: 20,
+    color: "black",
+    marginTop: 5,
+  },
   modalButton: {
     backgroundColor: "#5780ef",
     padding: 10,

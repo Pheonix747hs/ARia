@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 20,
     marginRight: 10,
-    height: 40,
+    height: 45,
     backgroundColor: "rgba(200, 200, 200, 0.57)", // Light gray glass effect
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.3)",
