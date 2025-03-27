@@ -4,9 +4,12 @@ export type RootStackParamList = {
   HomeScreen: undefined;
   ARSceneScreen: {
     modelName: string;
-    modelFileName: String;
+    modelFileName: string;
     description: string;
-  }; // Add this line for ARSceneScreen
-  SettingsScreen: undefined; // Add this line for SettingsScreen
+    scale: [number, number, number];
+    rotation: [number, number, number];
+    position: [number, number, number];
+  };
+  SettingsScreen: undefined;
   SplashScreen: undefined;
 };
