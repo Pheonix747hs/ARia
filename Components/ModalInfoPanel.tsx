@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Modal,
   TouchableOpacity,
@@ -37,9 +37,12 @@ const ModalInfoPanel: React.FC<ModalInfoPanelProps> = ({
       }
       return false;
     };
-    BackHandler.addEventListener("hardwareBackPress", onBackPress);
-    return () =>
-      BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      onBackPress
+    );
+    return () => backHandler.remove();
   }, [visible]);
 
   return (
@@ -52,54 +55,62 @@ const ModalInfoPanel: React.FC<ModalInfoPanelProps> = ({
       <TouchableWithoutFeedback onPress={onDismiss}>
         <View style={styles.modalContainer} />
       </TouchableWithoutFeedback>
-      <View
-        style={[
-          styles.modalContent,
-          {
-            backgroundColor: darkMode
-              ? "rgba(29, 29, 29, 0.62)"
-              : "rgba(255, 255, 255, 0.8)",
-            borderRadius: 16,
-          },
-        ]}
-      >
-        {/* Header (Stationary) */}
-        <Text
-          style={[styles.modalTitle, { color: darkMode ? "white" : "black" }]}
-        >
-          {modelName}
-        </Text>
+
+      <TouchableWithoutFeedback>
         <View
-          style={{
-            borderBottomColor: darkMode ? "white" : "black",
-            borderBottomWidth: 2,
-          }}
-        />
-
-        {/* Content Container */}
-        <View style={styles.contentContainer}>
-          <RenderHTML
-            contentWidth={width}
-            source={
-              typeof description === "string"
-                ? { html: `${description}` }
-                : description
-            }
-            baseStyle={{
-              ...styles.modalDescription,
-              color: darkMode ? "white" : "black",
+          style={[
+            styles.modalContent,
+            {
+              backgroundColor: darkMode
+                ? "rgba(29, 29, 29, 0.9)"
+                : "rgba(255, 255, 255, 0.95)",
+            },
+          ]}
+        >
+          {/* Header */}
+          <Text
+            style={[styles.modalTitle, { color: darkMode ? "white" : "black" }]}
+          >
+            {modelName}
+          </Text>
+          <View
+            style={{
+              borderBottomColor: darkMode ? "white" : "black",
+              borderBottomWidth: 2,
             }}
-            tagsStyles={{ img: { height: 150 } }}
           />
-        </View>
 
-        {/* Footer with Dismiss Button */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={onDismiss} style={styles.modalButton}>
-            <Text style={styles.modalButtonText}>Dismiss</Text>
-          </TouchableOpacity>
+          {/* Content Container */}
+          <View style={styles.contentContainer}>
+            <RenderHTML
+              contentWidth={width}
+              source={
+                typeof description === "string"
+                  ? { html: `${description}` }
+                  : description
+              }
+              baseStyle={{
+                ...styles.modalDescription,
+                color: darkMode ? "white" : "black",
+              }}
+              tagsStyles={{ img: { height: 150 } }}
+            />
+          </View>
+
+          {/* Footer with Dismiss Button */}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={onDismiss}
+              style={[
+                styles.modalButton,
+                { backgroundColor: darkMode ? "#333" : "#5780ef" },
+              ]}
+            >
+              <Text style={[styles.modalButtonText]}>Dismiss</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };
@@ -115,8 +126,9 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     padding: 20,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    maxHeight: "90%", // Prevents full-screen stretching
   },
   modalTitle: {
     fontSize: 20,
@@ -125,11 +137,12 @@ const styles = StyleSheet.create({
   },
   modalDescription: {
     fontSize: 16,
-    marginTop: 5,
+    marginTop: 0,
   },
   contentContainer: {
     width: "100%",
-    minHeight: 600,
+    minHeight: 300,
+    maxHeight: "95%", // Limits height to prevent overflow
     marginBottom: 10,
   },
   buttonContainer: {
@@ -138,12 +151,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   modalButton: {
-    backgroundColor: "#5780ef",
-    padding: 10,
-    borderRadius: 5,
+    padding: 12,
+    borderRadius: 8,
     alignItems: "center",
     flex: 1,
     marginHorizontal: 5,
   },
-  modalButtonText: { color: "#fff", fontSize: 16 },
+  modalButtonText: {
+    color: "#fff",
+    fontSize: 16,
+  },
 });

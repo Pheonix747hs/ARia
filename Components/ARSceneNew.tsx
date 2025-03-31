@@ -25,30 +25,39 @@ const ARSceneNew: React.FC<ARSceneProps> = ({
   rotation,
   position,
 }) => {
-  const [text, setText] = useState("Initializing AR...");
+  const [statusText, setStatusText] = useState("Initializing AR...");
 
   const onInitialized = (state: any) => {
-    if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setText(`${modelName} AR Initialized`);
-    } else {
-      setText("Tracking Unavailable");
+    switch (state) {
+      case ViroTrackingStateConstants.TRACKING_NORMAL:
+        setStatusText(`${modelName} is Ready`);
+        break;
+      case ViroTrackingStateConstants.TRACKING_UNAVAILABLE:
+        setStatusText("Tracking Lost. Move your device.");
+        break;
+      default:
+        setStatusText("Initializing AR...");
+        break;
     }
   };
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
-      <ViroAmbientLight color="#ffffff" intensity={500} />
-      <ViroSpotLight
-        direction={[0, -120, 0]}
-        intensity={5000}
-        color="#ffffff"
-      />
+      {/* Ambient Light for overall brightness */}
+      <ViroAmbientLight color="#ffffff" intensity={1000} />
+
+      {/* Spot Light to enhance the model */}
+      <ViroSpotLight direction={[0, -1, 0]} intensity={6000} color="#ffffff" />
+
+      {/* Status Text Display */}
       <ViroText
-        text={text}
+        text={statusText}
         scale={[0.5, 0.5, 0.5]}
-        position={[0, 0.4, -1]}
-        style={styles.helloWorldTextStyle}
+        position={[0, 0.5, -1]}
+        style={styles.statusText}
       />
+
+      {/* 3D Model */}
       <Viro3DObject
         source={
           modelSources[modelFileName] || modelSources["default_scene.glb"]
@@ -70,9 +79,10 @@ const ARSceneNew: React.FC<ARSceneProps> = ({
 export default ARSceneNew;
 
 const styles = StyleSheet.create({
-  helloWorldTextStyle: {
-    fontSize: 30,
+  statusText: {
+    fontSize: 28,
     color: "#ffffff",
     textAlign: "center",
+    fontWeight: "600",
   },
 });

@@ -12,27 +12,25 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Data/types";
-import { subjects, models, Subject } from "../Data/modelData";
-import { useTheme } from "../context/ThemeContext"; // Import Theme Context
+import { subjects, models } from "../Data/modelData";
+import { useTheme } from "../context/ThemeContext";
 
 type HomeScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, "HomeScreen">;
 };
 
 const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
-  const { darkMode } = useTheme(); // Get global dark mode state
-  const [selectedSubject, setSelectedSubject] = useState<Subject>("Chemistry");
+  const { darkMode } = useTheme();
+  const [selectedSubject, setSelectedSubject] = useState(subjects[0]);
 
   return (
     <SafeAreaView style={[styles.container, darkMode && styles.darkContainer]}>
-      {/* Status Bar */}
       <StatusBar
         translucent
         backgroundColor={darkMode ? "#181818" : "#f5f5f5"}
         barStyle={darkMode ? "light-content" : "dark-content"}
       />
 
-      {/* Header */}
       <View style={[styles.header, darkMode && styles.darkHeader]}>
         <Text style={[styles.title, darkMode && styles.darkText]}>ARia</Text>
         <TouchableOpacity onPress={() => navigation.navigate("SettingsScreen")}>
@@ -43,61 +41,61 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      {/* Subject Selection ScrollView */}
-      <FlatList
-        data={models[selectedSubject]}
-        keyExtractor={(item) => item.id.toString()}
-        ListHeaderComponent={
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.subjectNav}
-          >
-            {subjects.map((subject) => (
-              <TouchableOpacity
-                key={subject}
+      <View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.subjectNav}
+        >
+          {subjects.map((subject) => (
+            <TouchableOpacity
+              key={subject}
+              style={[
+                styles.subjectButton,
+                darkMode && styles.darkButton,
+                selectedSubject === subject && styles.subjectButtonSelected,
+              ]}
+              onPress={() => setSelectedSubject(subject)}
+            >
+              <Text
                 style={[
-                  styles.subjectButton,
-                  darkMode && styles.darkButton,
-                  selectedSubject === subject && styles.subjectButtonSelected,
+                  styles.subjectButtonText,
+                  darkMode && styles.darkSubjectButtonText,
+                  selectedSubject === subject &&
+                    styles.subjectButtonTextSelected,
                 ]}
-                onPress={() => setSelectedSubject(subject)}
               >
-                <Text
-                  style={[
-                    styles.subjectButtonText,
-                    darkMode && styles.darkSubjectButtonText,
-                    selectedSubject === subject &&
-                      styles.subjectButtonTextSelected,
-                  ]}
-                >
-                  {subject}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        }
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[styles.modelItem, darkMode && styles.darkModelItem]}
-            onPress={() =>
-              navigation.navigate("ARSceneScreen", {
-                modelName: item.name,
-                modelFileName: item.file,
-                description: item.description,
-                scale: item.scale, // Pass scale
-                rotation: item.rotation, // Pass rotation
-                position: item.position, // Pass position
-              })
-            }
-          >
-            <Text style={[styles.modelText, darkMode && styles.darkText]}>
-              {item.name}
-            </Text>
-          </TouchableOpacity>
-        )}
-        contentContainerStyle={styles.modelList}
-      />
+                {subject}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <FlatList
+          data={models[selectedSubject] || []} // Ensure no crash if subject is missing
+          keyExtractor={(item) => String(item.id)}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={[styles.modelItem, darkMode && styles.darkModelItem]}
+              onPress={() =>
+                navigation.navigate("ARSceneScreen", {
+                  modelName: item.name,
+                  modelFileName: item.file,
+                  description: item.description,
+                  scale: item.scale,
+                  rotation: item.rotation,
+                  position: item.position,
+                })
+              }
+            >
+              <Text style={[styles.modelText, darkMode && styles.darkText]}>
+                {item.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+          contentContainerStyle={styles.modelList}
+        />
+      </View>
     </SafeAreaView>
   );
 };
@@ -122,7 +120,7 @@ const styles = StyleSheet.create({
 
   settingsIcon: { width: 30, height: 30 },
 
-  subjectNav: { marginTop: 10, marginBottom: 20, paddingHorizontal: 10 },
+  subjectNav: { marginTop: 10, marginBottom: 10, paddingHorizontal: 10 }, // Removed marginBottom
 
   subjectButton: {
     paddingVertical: 10,
@@ -153,12 +151,12 @@ const styles = StyleSheet.create({
   subjectButtonText: { fontSize: 16, color: "#000" },
   subjectButtonTextSelected: { color: "#fff" },
 
-  modelList: { paddingHorizontal: 16, flex: 1 },
+  modelList: { paddingHorizontal: 16 }, // Removed paddingTop
 
   modelItem: {
-    marginTop: 10,
+    marginTop: 5,
     padding: 20,
-    marginBottom: 10,
+    marginBottom: 5,
     backgroundColor: "rgba(0, 0, 0, 0.14)",
     borderRadius: 10,
     borderWidth: 1,

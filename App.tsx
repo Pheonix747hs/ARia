@@ -6,11 +6,12 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from "@react-navigation/stack";
-import { RootStackParamList } from "./Data/types"; // Import the param list
+import { RootStackParamList } from "./Data/types";
 import SplashScreenNew from "./screens/SplashScreenNew";
 import HomeScreenNew from "./screens/HomeScreenNew";
 import ARSceneScreenNew from "./screens/ARSceneScreenNew";
 import SettingsScreen from "./screens/SettingsScreen";
+import ChatScreen from "./screens/ChatScreen";
 import { ThemeProvider } from "./context/ThemeContext";
 
 // Enable react-native-screens for performance
@@ -34,15 +35,19 @@ const App = () => {
             component={HomeScreenNew}
             options={{ headerShown: false }}
           />
-          {/* Use the correct typing for the ARSceneScreen that expects params */}
           <Stack.Screen
             name="ARSceneScreen"
-            component={ARSceneScreenNew as React.FC<any>}
+            component={ARSceneScreenNew}
             options={{ headerShown: false }}
           />
           <Stack.Screen
             name="SettingsScreen"
-            component={SettingsScreen as React.FC<any>}
+            component={SettingsScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ChatScreen"
+            component={ChatScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

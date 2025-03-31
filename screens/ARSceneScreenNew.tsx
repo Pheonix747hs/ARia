@@ -1,67 +1,81 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  SafeAreaView,
-  StatusBar,
   View,
-  Text,
   TouchableOpacity,
-  Image,
   StyleSheet,
-  Platform,
   BackHandler,
+  Text,
+  Image,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { ViroARSceneNavigator } from "@reactvision/react-viro";
-import { useTheme } from "../context/ThemeContext";
-import ARSceneNew from "../Components/ARSceneNew";
-import ModalInfoPanel from "../Components/ModalInfoPanel";
+import { RouteProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../Data/types";
+import { useTheme } from "../context/ThemeContext";
+import ModalInfoPanel from "../Components/ModalInfoPanel";
+import ARSceneNew from "../Components/ARSceneNew";
 import { StackNavigationProp } from "@react-navigation/stack";
 
+const backIcon = require("../assets/icons/back2.png");
+const infoIcon = require("../assets/icons/information.png");
+
+type ARSceneScreenRouteProp = RouteProp<RootStackParamList, "ARSceneScreen">;
+type NavigationProps = StackNavigationProp<RootStackParamList, "ARSceneScreen">;
+
 interface ARSceneScreenProps {
-  route: {
-    params: {
-      modelName: string;
-      modelFileName: string;
-      description: string;
-      scale: [number, number, number];
-      rotation: [number, number, number];
-      position: [number, number, number];
-    };
-  };
+  route: ARSceneScreenRouteProp;
 }
 
 const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
-  const { darkMode } = useTheme();
   const { modelName, modelFileName, description, scale, rotation, position } =
     route.params;
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const [isPanelVisible, setPanelVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const navigation = useNavigation<NavigationProps>();
+  const { darkMode } = useTheme();
 
+  // Handle Android back button
   useEffect(() => {
     const onBackPress = () => {
-      if (isPanelVisible) {
-        setPanelVisible(false);
-        return true;
-      }
-      return false;
+      navigation.goBack();
+      return true;
     };
-    BackHandler.addEventListener("hardwareBackPress", onBackPress);
 
-    return () => {
-      BackHandler.removeEventListener("hardwareBackPress", onBackPress);
-    };
-  }, [isPanelVisible]);
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      onBackPress
+    );
+    return () => backHandler.remove();
+  }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar
-        translucent
-        backgroundColor={darkMode ? "#181818" : "#f5f5f5"}
-        barStyle={darkMode ? "light-content" : "dark-content"}
-      />
+    <View style={styles.container}>
+      {/* Header */}
+      <View
+        style={[
+          styles.header,
+          { backgroundColor: darkMode ? "#1D1D1D" : "#F5F5F5" },
+        ]}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.iconButton}
+        >
+          <Image source={backIcon} style={styles.icon} />
+        </TouchableOpacity>
+
+        <Text style={[styles.title, { color: darkMode ? "white" : "black" }]}>
+          {modelName}
+        </Text>
+
+        <TouchableOpacity
+          onPress={() => setIsModalVisible(true)}
+          style={styles.iconButton}
+        >
+          <Image source={infoIcon} style={styles.icon} />
+        </TouchableOpacity>
+      </View>
+
+      {/* AR Scene */}
       <ViroARSceneNavigator
-        autofocus
         initialScene={{
           scene: () => (
             <ARSceneNew
@@ -73,93 +87,72 @@ const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
             />
           ),
         }}
-        style={styles.f1}
       />
 
-      {/* Header overlay */}
-      <View
-        style={[
-          styles.absoluteHeader,
-          darkMode ? styles.headerdark : styles.headerlight,
-        ]}
+      {/* Floating Chat Button */}
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() =>
+          navigation.navigate("ChatScreen", { modelName: modelName })
+        }
       >
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text
-            style={[styles.backText, { color: darkMode ? "white" : "black" }]}
-          >
-            {"< Back"}
-          </Text>
-        </TouchableOpacity>
-        <Text
-          style={[styles.headerTitle, { color: darkMode ? "white" : "black" }]}
-        >
-          {modelName}
-        </Text>
-        <TouchableOpacity
-          onPress={() => setPanelVisible(true)}
-          style={styles.infoButton}
-        >
-          <Image
-            source={require("../assets/icons/information.png")}
-            style={[
-              {
-                width: 25,
-                height: 25,
-                tintColor: darkMode ? "white" : "black",
-              },
-            ]}
-          />
-        </TouchableOpacity>
-      </View>
+        <Text style={styles.buttonText}>Chat</Text>
+      </TouchableOpacity>
 
-      {/* Modal Info Panel */}
+      {/* Info Modal */}
       <ModalInfoPanel
-        visible={isPanelVisible}
-        onDismiss={() => setPanelVisible(false)}
+        visible={isModalVisible}
+        onDismiss={() => setIsModalVisible(false)}
         modelName={modelName}
         description={description}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default ARSceneScreenNew;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
-  f1: { flex: 1 },
-  absoluteHeader: {
+  container: {
+    flex: 1,
+  },
+  header: {
     position: "absolute",
-    top: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    top: 0,
     left: 0,
     right: 0,
+    height: 80,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 10,
+    paddingHorizontal: 15,
+    paddingTop: 30,
+    zIndex: 2,
+    elevation: 3,
   },
-  headerlight: { backgroundColor: "rgba(255, 255, 255, 0.5)" },
-  headerdark: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
-  backText: { fontSize: 18 },
-  headerTitle: { flex: 1, fontSize: 20, textAlign: "center" },
-  infoButton: { padding: 8 },
-
-  /* Floating Chat Button */
-  chatButton: {
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  iconButton: {
+    padding: 8,
+  },
+  icon: {
+    width: 24,
+    height: 24,
+    resizeMode: "contain",
+  },
+  floatingButton: {
     position: "absolute",
     bottom: 20,
     right: 20,
     backgroundColor: "#5780ef",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 25,
-    elevation: 5, // Shadow on Android
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 30,
+    elevation: 5,
   },
-  chatButtonText: {
+  buttonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
