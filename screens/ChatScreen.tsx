@@ -18,6 +18,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useTheme } from "../context/ThemeContext";
 import { GEMINI_API_KEY } from "@env";
 import { RootStackParamList } from "../Data/types";
+import { Colors } from "../Data/Colors";
 
 // Import the back button icon
 const backIcon = require("../assets/icons/back2.png");
@@ -30,6 +31,7 @@ const ChatScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();
   const route = useRoute<ChatScreenRouteProp>();
   const { darkMode } = useTheme();
+  const themeColors = darkMode ? Colors.dark : Colors.light;
   const [messages, setMessages] = useState<{ text: string; sender: string }[]>(
     []
   );
@@ -74,16 +76,40 @@ const ChatScreen: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={[styles.container, darkMode && styles.darkContainer]}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        darkMode && { backgroundColor: themeColors.background },
+      ]}
+    >
       {/* Header with back button and model name */}
-      <View style={[styles.header, darkMode && styles.darkHeader]}>
+      <View
+        style={[
+          styles.header,
+          darkMode && {
+            backgroundColor: themeColors.header,
+            borderBottomColor: themeColors.border,
+          },
+        ]}
+      >
         <TouchableOpacity
           onPress={() => navigation.navigate("HomeScreen")}
           style={styles.backButton}
         >
-          <Image source={backIcon} style={styles.backIcon} />
+          <Image
+            source={backIcon}
+            style={[
+              styles.backIcon,
+              darkMode && { tintColor: themeColors.primary },
+            ]}
+          />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, darkMode && styles.darkText]}>
+        <Text
+          style={[
+            styles.headerTitle,
+            darkMode && { color: themeColors.primary },
+          ]}
+        >
           {modelName}
         </Text>
       </View>
@@ -95,10 +121,23 @@ const ChatScreen: React.FC = () => {
           <View
             style={[
               styles.message,
-              item.sender === "user" ? styles.userMessage : styles.botMessage,
+              item.sender === "user"
+                ? [
+                    styles.userMessage,
+                    { backgroundColor: themeColors.darkprimary },
+                  ]
+                : [styles.botMessage, { backgroundColor: themeColors.border }],
+              {},
             ]}
           >
-            <Text style={[styles.messageText, darkMode && styles.darkText]}>
+            <Text
+              style={[
+                styles.messageText,
+                item.sender === "user"
+                  ? [darkMode && { color: themeColors.text }]
+                  : [darkMode && { color: themeColors.inputBackground }],
+              ]}
+            >
               {item.text}
             </Text>
           </View>
@@ -113,22 +152,27 @@ const ChatScreen: React.FC = () => {
         </View>
       )}
 
+      {/* Keyboard */}
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.inputContainer}
+        style={[styles.inputContainer, { backgroundColor: themeColors.header }]}
       >
         <TextInput
           style={[
             styles.input,
             darkMode && styles.darkInput,
             { color: darkMode ? "#fff" : "#000" },
+            { borderColor: themeColors.border, borderWidth: 1 },
           ]}
           value={input}
           onChangeText={setInput}
           placeholder="Type a message..."
           placeholderTextColor={darkMode ? "#aaa" : "#666"}
         />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+        <TouchableOpacity
+          style={[styles.sendButton, { backgroundColor: themeColors.primary }]}
+          onPress={sendMessage}
+        >
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
@@ -138,11 +182,12 @@ const ChatScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5f5f5" },
-  darkContainer: { backgroundColor: "#222" },
+
   chatContainer: {
     flexGrow: 1,
     justifyContent: "flex-end",
     paddingVertical: 20,
+    marginHorizontal: 10,
   },
   header: {
     marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
@@ -168,17 +213,27 @@ const styles = StyleSheet.create({
     color: "#000",
   },
   message: { padding: 10, marginVertical: 4, borderRadius: 8, maxWidth: "80%" },
-  userMessage: { alignSelf: "flex-end", backgroundColor: "#5780ef" },
-  botMessage: { alignSelf: "flex-start", backgroundColor: "#ddd" },
-  messageText: { color: "#000" },
+  userMessage: {
+    alignSelf: "flex-end",
+    backgroundColor: "rgba(214,207,225,1)",
+  },
+  botMessage: {
+    alignSelf: "flex-start",
+    backgroundColor: "rgba(214,207,225,1)",
+  },
+  messageText: { fontWeight: "400" },
   darkText: { color: "#fff" },
-  inputContainer: { flexDirection: "row", alignItems: "center", padding: 10 },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    paddingTop: 20,
+  },
   input: { flex: 1, padding: 10, backgroundColor: "#fff", borderRadius: 20 },
   darkInput: { backgroundColor: "#444" },
   sendButton: {
     marginLeft: 10,
     padding: 10,
-    backgroundColor: "#5780ef",
     borderRadius: 20,
   },
   sendButtonText: { color: "#fff", fontWeight: "bold" },

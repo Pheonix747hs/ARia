@@ -59,7 +59,10 @@ const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
           onPress={() => navigation.goBack()}
           style={styles.iconButton}
         >
-          <Image source={backIcon} style={styles.icon} />
+          <Image
+            source={backIcon}
+            style={[styles.icon, { tintColor: darkMode ? "white" : "black" }]}
+          />
         </TouchableOpacity>
 
         <Text style={[styles.title, { color: darkMode ? "white" : "black" }]}>
@@ -70,12 +73,16 @@ const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
           onPress={() => setIsModalVisible(true)}
           style={styles.iconButton}
         >
-          <Image source={infoIcon} style={styles.icon} />
+          <Image
+            source={infoIcon}
+            style={[styles.icon, { tintColor: darkMode ? "white" : "black" }]}
+          />
         </TouchableOpacity>
       </View>
 
       {/* AR Scene */}
       <ViroARSceneNavigator
+        autofocus={true}
         initialScene={{
           scene: () => (
             <ARSceneNew

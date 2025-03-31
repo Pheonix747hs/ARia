@@ -10,16 +10,18 @@ export const Colors = {
     border: "rgba(92,137,157,0.3)", // Cool Teal with reduced opacity for borders
     placeholder: "rgba(92,137,157,0.7)", // Slightly opaque Cool Teal for placeholder text
     inputBackground: "rgba(255,252,239,1)", // Ivory White for inputs
+    darkprimary: "rgb(69, 125, 149)",
   },
   dark: {
     // Dark Mode Colors
     background: "rgba(46,46,46,1)", // Deep Charcoal (#2E2E2E)
-    primary: "rgba(214,207,225,1)", // Muted Lilac (#D6CFE1)
+    primary: "rgb(196, 180, 223)", // Muted Lilac (#D6CFE1)
     text: "rgba(255,255,255,1)", // White text for contrast
-    header: "rgba(46,46,46,1)", // Deep Charcoal header background
-    border: "rgba(214,207,225,0.3)", // Muted Lilac with reduced opacity for borders
+    header: "rgb(41, 41, 41)", // Deep Charcoal header background
+    border: "rgba(207, 195, 227, 0.63)", // Muted Lilac with reduced opacity for borders
     placeholder: "rgba(214,207,225,0.7)", // Slightly opaque Muted Lilac for placeholder text
     inputBackground: "rgba(46,46,46,1)", // Deep Charcoal for inputs
+    darkprimary: "rgb(153, 116, 218)",
   },
 };
 

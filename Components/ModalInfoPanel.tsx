@@ -122,13 +122,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     backgroundColor: "rgba(0,0,0,0.6)",
-    paddingBottom: 10,
+    paddingBottom: 50,
+    zIndex: 1,
   },
   modalContent: {
     padding: 20,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+
     maxHeight: "90%", // Prevents full-screen stretching
+    zIndex: 2,
   },
   modalTitle: {
     fontSize: 20,
