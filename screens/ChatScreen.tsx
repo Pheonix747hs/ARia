@@ -114,6 +114,7 @@ const ChatScreen: React.FC = () => {
         </Text>
       </View>
 
+      {/* Chat log [Dumped after every refresh] */}
       <FlatList
         data={messages}
         keyExtractor={(_, index) => index.toString()}
@@ -147,7 +148,12 @@ const ChatScreen: React.FC = () => {
 
       {/* Loading indicator while waiting for API response */}
       {loading && (
-        <View style={styles.loadingContainer}>
+        <View
+          style={[
+            styles.loadingContainer,
+            { backgroundColor: themeColors.placeholder },
+          ]}
+        >
           <ActivityIndicator size="large" color="#5780ef" />
         </View>
       )}
@@ -239,7 +245,7 @@ const styles = StyleSheet.create({
   sendButtonText: { color: "#fff", fontWeight: "bold" },
   loadingContainer: {
     position: "absolute",
-    bottom: 70,
+    bottom: 80,
     left: 0,
     right: 0,
     alignItems: "center",

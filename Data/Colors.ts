@@ -24,7 +24,9 @@ export const Colors = {
     darkprimary: "rgb(153, 116, 218)",
   },
 };
-
+// [For Aryan]
+// You can change around the colors if you wish, just make sure that if you add
+// a new color add a equivalent color for both light and dark themes
 `
 Example
 
