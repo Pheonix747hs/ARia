@@ -20,9 +20,7 @@ import { GEMINI_API_KEY } from "@env";
 import { RootStackParamList } from "../Data/types";
 import { Colors } from "../Data/Colors";
 
-// Import the back button icon
-const backIcon = require("../assets/icons/back2.png");
-
+import Markdown from "react-native-markdown-display";
 // Define navigation types
 type ChatScreenRouteProp = RouteProp<RootStackParamList, "ChatScreen">;
 type NavigationProps = StackNavigationProp<RootStackParamList, "ChatScreen">;
@@ -37,6 +35,7 @@ const ChatScreen: React.FC = () => {
   );
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const backIcon = require("../assets/icons/back2.png");
 
   // Extract only modelName from route params, with a default value
   const { modelName = "Chat AI" } = route.params || {};
@@ -61,12 +60,14 @@ const ChatScreen: React.FC = () => {
         }
       );
       const data = await response.json();
+
       const botMessage = {
         text:
           data.candidates?.[0]?.content?.parts?.[0]?.text ||
           "Sorry, I couldn't understand.",
         sender: "bot",
       };
+
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error("Error fetching response:", error);
@@ -131,16 +132,19 @@ const ChatScreen: React.FC = () => {
               {},
             ]}
           >
-            <Text
-              style={[
-                styles.messageText,
-                item.sender === "user"
-                  ? [darkMode && { color: themeColors.text }]
-                  : [darkMode && { color: themeColors.inputBackground }],
-              ]}
+            <Markdown
+              style={{
+                body: {
+                  ...(darkMode
+                    ? item.sender === "user"
+                      ? { color: themeColors.text }
+                      : { color: themeColors.inputBackground }
+                    : {}),
+                },
+              }}
             >
               {item.text}
-            </Text>
+            </Markdown>
           </View>
         )}
         contentContainerStyle={styles.chatContainer}
@@ -227,7 +231,6 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     backgroundColor: "rgba(214,207,225,1)",
   },
-  messageText: { fontWeight: "400" },
   darkText: { color: "#fff" },
   inputContainer: {
     flexDirection: "row",
