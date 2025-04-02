@@ -32,7 +32,7 @@ const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
   const navigation = useNavigation<NavigationProps>();
   const { darkMode } = useTheme();
 
-  // Handle Android back button
+  // Android back button
   useEffect(() => {
     const onBackPress = () => {
       navigation.goBack();
@@ -96,7 +96,7 @@ const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
         }}
       />
 
-      {/* Floating Chat Button */}
+      {/* Chat Button */}
       <TouchableOpacity
         style={styles.floatingButton}
         onPress={() =>

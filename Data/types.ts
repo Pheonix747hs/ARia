@@ -12,5 +12,5 @@ export type RootStackParamList = {
   };
   SettingsScreen: undefined;
   SplashScreen: undefined;
-  ChatScreen: { modelName: string };
+  ChatScreen: { modelName?: string };
 };

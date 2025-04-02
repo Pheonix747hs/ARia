@@ -14,6 +14,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../Data/types";
 import { subjects, models } from "../Data/modelData";
 import { useTheme } from "../context/ThemeContext";
+import { Colors } from "../Data/Colors";
 
 type HomeScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, "HomeScreen">;
@@ -22,6 +23,7 @@ type HomeScreenProps = {
 const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { darkMode } = useTheme();
   const [selectedSubject, setSelectedSubject] = useState(subjects[0]);
+  const themeColors = darkMode ? Colors.dark : Colors.light;
 
   return (
     <SafeAreaView style={[styles.container, darkMode && styles.darkContainer]}>
@@ -96,6 +98,15 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
           contentContainerStyle={styles.modelList}
         />
       </View>
+      <TouchableOpacity
+        style={[
+          styles.floatingButton,
+          { backgroundColor: themeColors.primary },
+        ]}
+        onPress={() => navigation.navigate("ChatScreen", {})}
+      >
+        <Text style={styles.buttonText}>Chat</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -168,4 +179,19 @@ const styles = StyleSheet.create({
   },
 
   modelText: { fontSize: 18, color: "#000" },
+  floatingButton: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 30,
+    elevation: 5,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
