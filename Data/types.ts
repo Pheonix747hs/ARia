@@ -1,8 +1,8 @@
 // types.ts
 
 export type RootStackParamList = {
-  HomeScreen: undefined;
-  ARSceneScreen: {
+  HomeScreenNew: undefined;
+  ARSceneScreenNew: {
     modelName: string;
     modelFileName: string;
     description: string;
@@ -11,6 +11,6 @@ export type RootStackParamList = {
     position: [number, number, number];
   };
   SettingsScreen: undefined;
-  SplashScreen: undefined;
+  SplashScreenNew: undefined;
   ChatScreen: { modelName?: string };
 };

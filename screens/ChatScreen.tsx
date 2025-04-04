@@ -94,7 +94,7 @@ const ChatScreen: React.FC = () => {
         ]}
       >
         <TouchableOpacity
-          onPress={() => navigation.navigate("HomeScreen")}
+          onPress={() => navigation.navigate("HomeScreenNew")}
           style={styles.backButton}
         >
           <Image

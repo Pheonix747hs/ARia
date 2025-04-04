@@ -18,8 +18,11 @@ import { StackNavigationProp } from "@react-navigation/stack";
 const backIcon = require("../assets/icons/back2.png");
 const infoIcon = require("../assets/icons/information.png");
 
-type ARSceneScreenRouteProp = RouteProp<RootStackParamList, "ARSceneScreen">;
-type NavigationProps = StackNavigationProp<RootStackParamList, "ARSceneScreen">;
+type ARSceneScreenRouteProp = RouteProp<RootStackParamList, "ARSceneScreenNew">;
+type NavigationProps = StackNavigationProp<
+  RootStackParamList,
+  "ARSceneScreenNew"
+>;
 
 interface ARSceneScreenProps {
   route: ARSceneScreenRouteProp;
