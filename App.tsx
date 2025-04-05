@@ -24,19 +24,19 @@ const App = () => {
   return (
     <ThemeProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="SplashScreen">
+        <Stack.Navigator initialRouteName="SplashScreenNew">
           <Stack.Screen
-            name="SplashScreen"
+            name="SplashScreenNew"
             component={SplashScreenNew}
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="HomeScreen"
+            name="HomeScreenNew"
             component={HomeScreenNew}
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="ARSceneScreen"
+            name="ARSceneScreenNew"
             component={ARSceneScreenNew}
             options={{ headerShown: false }}
           />

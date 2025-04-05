@@ -17,7 +17,14 @@ import { useTheme } from "../context/ThemeContext";
 import { Colors } from "../Data/Colors";
 
 type HomeScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, "HomeScreen">;
+  navigation: StackNavigationProp<RootStackParamList, "HomeScreenNew">;
+};
+
+const subjectImages = {
+  Chemistry: require("../assets/chemistry.jpeg"),
+  Biology: require("../assets/biology.png"),
+  Physics: require("../assets/physics.jpg"),
+  Astronomy: require("../assets/astronomy.png"),
 };
 
 const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
@@ -33,8 +40,12 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
         barStyle={darkMode ? "light-content" : "dark-content"}
       />
 
+      {/* Header with Logo and Title */}
       <View style={[styles.header, darkMode && styles.darkHeader]}>
-        <Text style={[styles.title, darkMode && styles.darkText]}>ARia</Text>
+        <View style={styles.logoContainer}>
+          <Image source={require("../assets/logo.png")} style={styles.logo} />
+          <Text style={[styles.title, darkMode && styles.darkText]}>ARia</Text>
+        </View>
         <TouchableOpacity onPress={() => navigation.navigate("SettingsScreen")}>
           <Image
             source={require("../assets/icons/settings.png")}
@@ -73,6 +84,12 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
           ))}
         </ScrollView>
 
+        {/* Subject-Specific Image */}
+        <Image
+          source={subjectImages[selectedSubject]}
+          style={styles.subjectImage}
+        />
+
         <FlatList
           data={models[selectedSubject] || []} // Ensure no crash if subject is missing
           keyExtractor={(item) => String(item.id)}
@@ -80,7 +97,7 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
             <TouchableOpacity
               style={[styles.modelItem, darkMode && styles.darkModelItem]}
               onPress={() =>
-                navigation.navigate("ARSceneScreen", {
+                navigation.navigate("ARSceneScreenNew", {
                   modelName: item.name,
                   modelFileName: item.file,
                   description: item.description,
@@ -90,9 +107,7 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
                 })
               }
             >
-              <Text style={[styles.modelText, darkMode && styles.darkText]}>
-                {item.name}
-              </Text>
+              <Text style={[styles.modelText]}>{item.name}</Text>
             </TouchableOpacity>
           )}
           contentContainerStyle={styles.modelList}
@@ -114,19 +129,35 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
 export default HomeScreenNew;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f5f5f5" },
-  darkContainer: { backgroundColor: "#222" },
+  container: { flex: 1, backgroundColor: "#FFFCEF" },
+  darkContainer: { backgroundColor: "#333" },
 
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "#FFFCEF",
   },
-  darkHeader: { backgroundColor: "#111" },
+  darkHeader: { backgroundColor: "#333" },
 
-  title: { fontSize: 24, fontWeight: "bold", color: "#000" },
+  logoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  logo: {
+    width: 50,
+    height: 50,
+    marginRight: 8,
+  },
+
+  title: {
+    fontSize: 34,
+    fontWeight: "bold",
+    color: "#000",
+    marginLeft: -14, // Moves the title slightly to the left
+    marginTop: 10,
+  },
   darkText: { color: "#fff" },
 
   settingsIcon: { width: 30, height: 30 },
@@ -139,20 +170,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 10,
     height: 45,
-    backgroundColor: "rgba(200, 200, 200, 0.57)",
+    backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
+    borderColor: "#999",
   },
   darkButton: {
-    backgroundColor: "rgba(96, 96, 96, 0.68)",
-    borderColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: "#FFFCEF",
+    borderColor: "#999",
   },
   subjectButtonSelected: {
-    backgroundColor: "#5780ef",
-    borderColor: "#5780ef",
+    backgroundColor: "#93c6f3",
+    borderColor: "#999",
   },
   darkSubjectButtonText: {
-    color: "#d1d1d1",
+    color: "#333",
     fontWeight: "600",
     textShadowColor: "rgba(255, 255, 255, 0.3)",
     textShadowOffset: { width: 1, height: 1 },
@@ -160,7 +191,14 @@ const styles = StyleSheet.create({
   },
 
   subjectButtonText: { fontSize: 16, color: "#000" },
-  subjectButtonTextSelected: { color: "#fff" },
+  subjectButtonTextSelected: { color: "#000" },
+
+  subjectImage: {
+    width: "100%",
+    height: 120,
+    borderRadius: 12,
+    marginBottom: 10,
+  },
 
   modelList: { paddingHorizontal: 16 }, // Removed paddingTop
 
@@ -168,14 +206,14 @@ const styles = StyleSheet.create({
     marginTop: 5,
     padding: 20,
     marginBottom: 5,
-    backgroundColor: "rgba(0, 0, 0, 0.14)",
+    backgroundColor: "#fff",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
+    borderColor: "#999",
   },
   darkModelItem: {
-    backgroundColor: "rgba(92, 92, 92, 0.3)",
-    borderColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: "#FFFCEF",
+    borderColor: "#999",
   },
 
   modelText: { fontSize: 18, color: "#000" },
@@ -183,7 +221,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
-
+    backgroundColor: "#93c6f3",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 30,
