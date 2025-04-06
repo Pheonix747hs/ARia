@@ -7,7 +7,7 @@
 
 </details>
 
-## Before you compile the application make sure to include all 3d models from this drive : 
+## Before you compile the application make sure to include all 3d models from this drive in the folder ```./assets/models/$subject/$modeltype``` : 
 # Astronomy
 https://drive.google.com/drive/folders/1_txW_QPT0N26bOTiXjobphNyCtpk3pbi?usp=drive_link
 
