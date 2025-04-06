@@ -7,6 +7,16 @@
 
 </details>
 
+## Before you compile the application make sure to include all 3d models from this drive : 
+#Astronomy
+https://drive.google.com/drive/folders/1_txW_QPT0N26bOTiXjobphNyCtpk3pbi?usp=drive_link
+#Biology
+https://drive.google.com/drive/folders/1GtngHzTt00GkZGLOUPC1gjAy9ldQqdUl?usp=drive_link
+#Chemisty
+https://drive.google.com/drive/folders/1D7ypCH9HVhHR3laC9yHcBw_pr3hRj8Hs?usp=drive_link
+#Physics
+https://drive.google.com/drive/folders/1ldP-XjgTJMIwBctjXLYb6jT3HKO88Py4?usp=drive_link
+
 # Viro Starter Kit
 
 This is a new [**React Native**](https://reactnative.dev) project, set up with `@reactvision/react-viro`.
@@ -84,6 +94,8 @@ Now that you have successfully run the app, let's modify it.
 
 1. Open `App.tsx` in your text editor of choice and edit some lines.
 2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+
+
 
 ## Next Steps
 
