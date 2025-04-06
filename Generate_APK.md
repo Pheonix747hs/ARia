@@ -1,7 +1,5 @@
 ### **1. Generate a Release APK (Android)**
 
-Since Viro React is a React Native project, you need to generate an Android release build.
-
 #### **Step 1: Navigate to Your Android Folder**
 
 Open a terminal and go to your project’s Android directory:

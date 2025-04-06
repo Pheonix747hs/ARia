@@ -7,16 +7,16 @@ import { StackActions } from "@react-navigation/native";
 const SplashScreenNew = () => {
   const navigation = useNavigation();
 
-  useEffect(() => {
-    setTimeout(() => {
-      navigation.dispatch(StackActions.replace("HomeScreenNew"));
-    }, 4000); // Adjust to match your video's duration
-  }, [navigation]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     navigation.dispatch(StackActions.replace("HomeScreenNew"));
+  //   }, 5000); // Adjust to match your video's duration
+  // }, [navigation]);
 
   return (
     <View style={styles.container}>
       <Video
-        source={require("../assets/animation.mp4")} // Ensure the path is correct
+        source={require("../assets/background.mp4")} // Ensure the path is correct
         style={styles.video}
         resizeMode="cover" // Adjust to "contain" if needed
         muted={true} // Remove sound

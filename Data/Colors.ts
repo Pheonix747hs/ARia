@@ -4,13 +4,15 @@ export const Colors = {
   light: {
     // Light Mode Colors
     background: "rgba(255,252,239,1)", // Ivory White (#FFFCEF)
-    primary: "rgba(92,137,157,1)", // Cool Teal (#5C899D)
+    primary: "#9ec6f3", // Cool Teal (#5C899D)
     text: "rgba(0,0,0,1)", // Black text for contrast
     header: "rgba(255,252,239,1)", // Ivory White header background
     border: "rgba(92,137,157,0.3)", // Cool Teal with reduced opacity for borders
     placeholder: "rgba(92,137,157,0.7)", // Slightly opaque Cool Teal for placeholder text
     inputBackground: "rgba(255,252,239,1)", // Ivory White for inputs
     darkprimary: "rgb(69, 125, 149)",
+    usermessage: "#9ec6f3",
+    botmessage: "#fffcef",
   },
   dark: {
     // Dark Mode Colors
@@ -22,6 +24,8 @@ export const Colors = {
     placeholder: "rgba(214,207,225,0.7)", // Slightly opaque Muted Lilac for placeholder text
     inputBackground: "rgba(46,46,46,1)", // Deep Charcoal for inputs
     darkprimary: "rgb(153, 116, 218)",
+    usermessage: "#dad2ff",
+    botmessage: "#ffffff",
   },
 };
 // [For Aryan]

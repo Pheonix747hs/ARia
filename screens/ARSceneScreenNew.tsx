@@ -14,7 +14,7 @@ import { useTheme } from "../context/ThemeContext";
 import ModalInfoPanel from "../Components/ModalInfoPanel";
 import ARSceneNew from "../Components/ARSceneNew";
 import { StackNavigationProp } from "@react-navigation/stack";
-
+import { Colors } from "../Data/Colors";
 const backIcon = require("../assets/icons/back2.png");
 const infoIcon = require("../assets/icons/information.png");
 
@@ -34,7 +34,7 @@ const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const navigation = useNavigation<NavigationProps>();
   const { darkMode } = useTheme();
-
+  const themeColors = darkMode ? Colors.dark : Colors.light;
   // Android back button
   useEffect(() => {
     const onBackPress = () => {
@@ -101,12 +101,15 @@ const ARSceneScreenNew: React.FC<ARSceneScreenProps> = ({ route }) => {
 
       {/* Chat Button */}
       <TouchableOpacity
-        style={styles.floatingButton}
+        style={[
+          styles.floatingButton,
+          { backgroundColor: themeColors.primary },
+        ]}
         onPress={() =>
           navigation.navigate("ChatScreen", { modelName: modelName })
         }
       >
-        <Text style={styles.buttonText}>Chat</Text>
+        <Text style={[styles.buttonText]}>AI Chat</Text>
       </TouchableOpacity>
 
       {/* Info Modal */}
@@ -156,14 +159,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
-    backgroundColor: "#5780ef",
+
     paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 18,
     borderRadius: 30,
     elevation: 5,
   },
   buttonText: {
-    color: "#fff",
+    color: "black",
     fontSize: 16,
     fontWeight: "bold",
   },

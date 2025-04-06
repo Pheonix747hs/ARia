@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -19,8 +19,9 @@ import { useTheme } from "../context/ThemeContext";
 import { GEMINI_API_KEY } from "@env";
 import { RootStackParamList } from "../Data/types";
 import { Colors } from "../Data/Colors";
-
 import Markdown from "react-native-markdown-display";
+import TypewriterText from "../Components/TypewriterText";
+
 // Define navigation types
 type ChatScreenRouteProp = RouteProp<RootStackParamList, "ChatScreen">;
 type NavigationProps = StackNavigationProp<RootStackParamList, "ChatScreen">;
@@ -38,7 +39,14 @@ const ChatScreen: React.FC = () => {
   const backIcon = require("../assets/icons/back2.png");
 
   // Extract only modelName from route params, with a default value
-  const { modelName = "Chat AI" } = route.params || {};
+  const { modelName = "AI Chat" } = route.params || {};
+
+  // Set initial message
+  useEffect(() => {
+    setMessages([
+      { text: "Hi there! How can i help you today?", sender: "bot" },
+    ]);
+  }, []);
 
   const sendMessage = async () => {
     if (!input.trim()) {
@@ -56,7 +64,19 @@ const ChatScreen: React.FC = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ contents: [{ parts: [{ text: input }] }] }),
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text:
+                      input +
+                      "  . Unless ive said to give me a long explaination before this line keep the explaination small upto 800 words ",
+                  },
+                ],
+              },
+            ],
+          }),
         }
       );
       const data = await response.json();
@@ -87,7 +107,7 @@ const ChatScreen: React.FC = () => {
       <View
         style={[
           styles.header,
-          darkMode && {
+          {
             backgroundColor: themeColors.header,
             borderBottomColor: themeColors.border,
           },
@@ -115,7 +135,7 @@ const ChatScreen: React.FC = () => {
         </Text>
       </View>
 
-      {/* Chat log [Dumped after every refresh] */}
+      {/* Chat log */}
       <FlatList
         data={messages}
         keyExtractor={(_, index) => index.toString()}
@@ -123,28 +143,32 @@ const ChatScreen: React.FC = () => {
           <View
             style={[
               styles.message,
+              { borderWidth: 1, borderColor: themeColors.border },
               item.sender === "user"
                 ? [
                     styles.userMessage,
-                    { backgroundColor: themeColors.darkprimary },
+                    { backgroundColor: themeColors.usermessage },
                   ]
-                : [styles.botMessage, { backgroundColor: themeColors.border }],
-              {},
+                : [
+                    styles.botMessage,
+                    { backgroundColor: themeColors.botmessage },
+                  ],
             ]}
           >
-            <Markdown
-              style={{
-                body: {
-                  ...(darkMode
-                    ? item.sender === "user"
-                      ? { color: themeColors.text }
-                      : { color: themeColors.inputBackground }
-                    : {}),
-                },
-              }}
-            >
-              {item.text}
-            </Markdown>
+            {item.sender === "bot" ? (
+              // Use the custom typewriter effect for bot messages
+              <TypewriterText text={item.text} style={{ color: "black" }} />
+            ) : (
+              <Markdown
+                style={{
+                  body: {
+                    color: "black",
+                  },
+                }}
+              >
+                {item.text}
+              </Markdown>
+            )}
           </View>
         )}
         contentContainerStyle={styles.chatContainer}
@@ -176,14 +200,14 @@ const ChatScreen: React.FC = () => {
           ]}
           value={input}
           onChangeText={setInput}
-          placeholder="Type a message..."
+          placeholder=" Type a message..."
           placeholderTextColor={darkMode ? "#aaa" : "#666"}
         />
         <TouchableOpacity
           style={[styles.sendButton, { backgroundColor: themeColors.primary }]}
           onPress={sendMessage}
         >
-          <Text style={styles.sendButtonText}>Send</Text>
+          <Text style={[styles.sendButtonText, { color: "black" }]}>Send</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -192,7 +216,6 @@ const ChatScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5f5f5" },
-
   chatContainer: {
     flexGrow: 1,
     justifyContent: "flex-end",
@@ -205,7 +228,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
-    backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
     position: "relative",
@@ -222,7 +244,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000",
   },
-  message: { padding: 10, marginVertical: 4, borderRadius: 8, maxWidth: "80%" },
+  message: {
+    paddingHorizontal: 8,
+    paddingVertical: -9,
+    marginVertical: 4,
+    borderRadius: 20,
+    maxWidth: "80%",
+  },
   userMessage: {
     alignSelf: "flex-end",
     backgroundColor: "rgba(214,207,225,1)",
@@ -238,14 +266,21 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingTop: 20,
   },
-  input: { flex: 1, padding: 10, backgroundColor: "#fff", borderRadius: 20 },
+  input: {
+    flex: 1,
+    padding: 8,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    marginBottom: 5,
+  },
   darkInput: { backgroundColor: "#444" },
   sendButton: {
     marginLeft: 10,
-    padding: 10,
-    borderRadius: 20,
+    padding: 14,
+    borderRadius: 25,
+    marginBottom: 2,
   },
-  sendButtonText: { color: "#fff", fontWeight: "bold" },
+  sendButtonText: { fontWeight: "bold" },
   loadingContainer: {
     position: "absolute",
     bottom: 80,

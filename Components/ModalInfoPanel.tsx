@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import RenderHTML from "react-native-render-html";
 import { useTheme } from "../context/ThemeContext";
+import { Colors } from "../Data/Colors";
 
 interface ModalInfoPanelProps {
   visible: boolean;
@@ -27,7 +28,7 @@ const ModalInfoPanel: React.FC<ModalInfoPanelProps> = ({
 }) => {
   const { darkMode } = useTheme();
   const width = useWindowDimensions().width;
-
+  const themeColors = darkMode ? Colors.dark : Colors.light;
   // Handle hardware back button
   useEffect(() => {
     const onBackPress = () => {
@@ -103,10 +104,12 @@ const ModalInfoPanel: React.FC<ModalInfoPanelProps> = ({
               onPress={onDismiss}
               style={[
                 styles.modalButton,
-                { backgroundColor: darkMode ? "#333" : "#5780ef" },
+                { backgroundColor: themeColors.primary },
               ]}
             >
-              <Text style={[styles.modalButtonText]}>Dismiss</Text>
+              <Text style={[styles.modalButtonText, { color: "black" }]}>
+                Dismiss
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -159,7 +162,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   modalButtonText: {
-    color: "#fff",
     fontSize: 16,
   },
 });

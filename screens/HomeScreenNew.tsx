@@ -49,7 +49,10 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate("SettingsScreen")}>
           <Image
             source={require("../assets/icons/settings.png")}
-            style={styles.settingsIcon}
+            style={[
+              styles.settingsIcon,
+              { tintColor: darkMode ? "rgb(196, 180, 223)" : "#9ec6f3" },
+            ]}
           />
         </TouchableOpacity>
       </View>
@@ -66,7 +69,10 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
               style={[
                 styles.subjectButton,
                 darkMode && styles.darkButton,
-                selectedSubject === subject && styles.subjectButtonSelected,
+                { backgroundColor: "#ffffff" },
+                selectedSubject === subject && {
+                  backgroundColor: themeColors.primary,
+                },
               ]}
               onPress={() => setSelectedSubject(subject)}
             >
@@ -87,15 +93,20 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
         {/* Subject-Specific Image */}
         <Image
           source={subjectImages[selectedSubject]}
-          style={styles.subjectImage}
+          style={[styles.subjectImage, { borderColor: themeColors.border }]}
         />
 
+        {/* List of models */}
         <FlatList
           data={models[selectedSubject] || []} // Ensure no crash if subject is missing
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={[styles.modelItem, darkMode && styles.darkModelItem]}
+              style={[
+                styles.modelItem,
+                darkMode && styles.darkModelItem,
+                { borderColor: themeColors.border },
+              ]}
               onPress={() =>
                 navigation.navigate("ARSceneScreenNew", {
                   modelName: item.name,
@@ -112,6 +123,8 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
           )}
           contentContainerStyle={styles.modelList}
         />
+
+        {/* ChatButton */}
       </View>
       <TouchableOpacity
         style={[
@@ -120,7 +133,7 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
         ]}
         onPress={() => navigation.navigate("ChatScreen", {})}
       >
-        <Text style={styles.buttonText}>Chat</Text>
+        <Text style={styles.buttonText}>AI Chat</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -146,45 +159,41 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     marginRight: 8,
   },
 
   title: {
-    fontSize: 34,
+    fontSize: 30,
     fontWeight: "bold",
     color: "#000",
     marginLeft: -14, // Moves the title slightly to the left
-    marginTop: 10,
+    marginTop: 13,
   },
   darkText: { color: "#fff" },
 
-  settingsIcon: { width: 30, height: 30 },
+  settingsIcon: { width: 30, height: 30, marginTop: 5 },
 
-  subjectNav: { marginTop: 10, marginBottom: 10, paddingHorizontal: 10 }, // Removed marginBottom
+  subjectNav: { marginTop: 10, marginBottom: 10, paddingHorizontal: 18 }, // Removed marginBottom
 
   subjectButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingTop: 5,
+    paddingBottom: 8,
+    paddingLeft: 10,
+    paddingRight: 10,
     borderRadius: 20,
     marginRight: 10,
-    height: 45,
-    backgroundColor: "#fff",
+
     borderWidth: 1,
     borderColor: "#999",
   },
   darkButton: {
-    backgroundColor: "#FFFCEF",
-    borderColor: "#999",
-  },
-  subjectButtonSelected: {
-    backgroundColor: "#93c6f3",
     borderColor: "#999",
   },
   darkSubjectButtonText: {
     color: "#333",
-    fontWeight: "600",
+
     textShadowColor: "rgba(255, 255, 255, 0.3)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
@@ -194,17 +203,19 @@ const styles = StyleSheet.create({
   subjectButtonTextSelected: { color: "#000" },
 
   subjectImage: {
-    width: "100%",
+    width: "92%",
     height: 120,
     borderRadius: 12,
-    marginBottom: 10,
+    marginBottom: 6,
+    marginHorizontal: 17,
+    borderWidth: 2,
   },
 
   modelList: { paddingHorizontal: 16 }, // Removed paddingTop
 
   modelItem: {
     marginTop: 5,
-    padding: 20,
+    padding: 18,
     marginBottom: 5,
     backgroundColor: "#fff",
     borderRadius: 10,
@@ -216,7 +227,7 @@ const styles = StyleSheet.create({
     borderColor: "#999",
   },
 
-  modelText: { fontSize: 18, color: "#000" },
+  modelText: { fontSize: 16, color: "#000" },
   floatingButton: {
     position: "absolute",
     bottom: 20,
@@ -228,7 +239,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonText: {
-    color: "#fff",
+    color: "black",
     fontSize: 16,
     fontWeight: "bold",
   },
