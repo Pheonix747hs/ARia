@@ -60,8 +60,6 @@ Edit `android/gradle.properties` and add:
 ```
 MYAPP_RELEASE_STORE_FILE=my-release-key.jks
 MYAPP_RELEASE_KEY_ALIAS=my-key-alias
-MYAPP_RELEASE_STORE_PASSWORD=your-password
-MYAPP_RELEASE_KEY_PASSWORD=your-password
 ```
 
 Edit `android/app/build.gradle`, inside `android { ... }`:
