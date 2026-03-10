@@ -19,20 +19,6 @@ export interface Model {
 
 export const models: Record<Subject, Model[]> = {
   Chemistry: [
-    // {
-    //   name: "Water molecule",
-    //   file: "drop_of_water.glb",
-    //   id: 1,
-    //   description: `
-    //     <h1>Water Molecule</h1>
-    //     <p>The water molecule consists of two hydrogen atoms and one oxygen atom, forming H₂O.</p>
-    //     <p>This unique structure is essential for life and gives water its special properties.</p>
-    //     <img src="https://upload.wikimedia.org/wikipedia/commons/e/e4/Water_molecule_3D.svg" alt="Water Molecule"  />
-    //   `,
-    //   scale: [0.2, 0.2, 0.2],
-    //   rotation: [0, -90, 0],
-    //   position: [0, -0.3, -0.5],
-    // },
     {
       name: "Oxygen atom",
       file: "oxy-atom.glb",

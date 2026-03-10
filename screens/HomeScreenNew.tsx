@@ -98,7 +98,7 @@ const HomeScreenNew: React.FC<HomeScreenProps> = ({ navigation }) => {
 
         {/* List of models */}
         <FlatList
-          data={models[selectedSubject] || []} // Ensure no crash if subject is missing
+          data={models[selectedSubject] || []}
           keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
             <TouchableOpacity
